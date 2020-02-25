@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="img-container">
+        <img src="https://lh3.googleusercontent.com/iXpM7AyZ6xcHp1rQ9RRUBve5TItpFxqSKYVJjRfaRRnBTEfToAnhltrKNSRemg1SO8yL55e10_NsknLk1IKq=s394" alt="Burger Image">
+    </div>
+    <h1>Eat-Da-Burger</h1>
+    <div class="lists-container">
+        {{!-- this is not devoured --}}
+        <h3>Not Devoured</h3>
+        <ul>
+            {{#each burgers}}
+                {{#with dataValues}}
+                    {{#unless isDevoured }}
+                        <li>
+                            Name: {{ name }} <button class="devour" data-id="{{ id }}">Devour it!</button>
+                        </li>
+                    {{/unless }}
+                {{/with}}
+            {{/each}}
+        </ul>
+        {{!-- this is devoured --}}
+        <h3>Devoured</h3>
+        <ul>
+            {{#each burgers}}
+                {{#if dataValues.isDevoured }}
+                    <li>
+                        Name: {{ dataValues.name }}
+                    </li>
+                {{/if }}
+            {{/each}}
+        </ul>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script>
+    $(".devour").click(async (e) => {
+        const $currentTarget = $(e.currentTarget);
+
+        const id = $currentTarget.data('id');
+
+        await $.ajax({
+            url: `/api/burger/${id}/devour`
+        });
+    });
+</script>
